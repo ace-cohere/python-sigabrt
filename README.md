@@ -36,3 +36,23 @@ Hello
 SIGABRT handled by Ctypes
 zsh: abort      python3 hello.py
 ```
+
+try except doesn't catch external sigterm (perhaps obvious)
+```
+$ python3 hello_py_term.py &
+[1] 49723
+$ pid=$!
+$ echo $pid
+49723
+$ kill -TERM $pid
+[1]  + terminated  python3 hello_py_term.py # no exception handler invoked
+```
+
+with python signal handler
+```
+$ python3 hello_py_term.py &
+[1] 50845
+$ kill -TERM $(pgrep -i python)
+Exiting gracefully
+[1]  + done       python3 term_good.py
+```
